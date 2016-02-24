@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestCalcMetrics(t *testing.T) {
-	v, err := calcMetrics("481453.56 1437723.27\n")
+func TestCalcUptime(t *testing.T) {
+	v, err := calcUptime("481453.56 1437723.27\n")
 	if err != nil {
 		t.Errorf("error should be nil but: %s", err)
 	}
