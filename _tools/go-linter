@@ -1,0 +1,8 @@
+#!/bin/sh
+
+LINT_RET=.golint.txt
+rm -f $LINT_RET
+for os in $@; do
+  GOOS=$os golint ./... | grep -v '_string.go:' | tee -a $LINT_RET
+done
+exec test ! -s $LINT_RET
