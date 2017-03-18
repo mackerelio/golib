@@ -74,7 +74,7 @@ func run(argv []string) int {
 	return exitOK
 }
 
-var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Relase, so skip the process.")
+var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Relase, so skip the process")
 
 func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dryRun bool) error {
 	br, err := git.Head()
@@ -178,12 +178,12 @@ func handleOldRelease(octoCli *octokit.Client, owner, repo, tag string, staging,
 	}
 	release, r := octoCli.Releases(u).Latest()
 	if r.Err != nil {
-		if rerr, ok := r.Err.(*octokit.ResponseError); !ok {
+		rerr, ok := r.Err.(*octokit.ResponseError)
+		if !ok {
 			return fmt.Errorf("failed to fetch release: %#v", r.Err)
-		} else {
-			if rerr.Response == nil || rerr.Response.StatusCode != http.StatusNotFound {
-				return fmt.Errorf("failed to fetch release: %#v")
-			}
+		}
+		if rerr.Response == nil || rerr.Response.StatusCode != http.StatusNotFound {
+			return fmt.Errorf("failed to fetch release: %#v", r.Err)
 		}
 	}
 	if release != nil {
