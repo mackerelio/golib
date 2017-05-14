@@ -10,7 +10,6 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"github.com/github/hub/git"
 	"github.com/github/hub/github"
 	"github.com/mitchellh/go-homedir"
 	"github.com/octokit/go-octokit/octokit"
@@ -40,8 +39,8 @@ func run(argv []string) int {
 	}
 	fs := flag.NewFlagSet("mackerel-github-release", flag.ContinueOnError)
 	var (
-		dryRun      = fs.Bool("dry-run", false, "dry-run mode")
-		staging     = fs.Bool("staging", false, "staging release")
+		dryRun  = fs.Bool("dry-run", false, "dry-run mode")
+		staging = fs.Bool("staging", false, "staging release")
 	)
 	err = fs.Parse(argv)
 	if err != nil {
@@ -77,15 +76,6 @@ func run(argv []string) int {
 var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Relase, so skip the process")
 
 func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dryRun bool) error {
-	br, err := git.Head()
-	if err != nil {
-		return fmt.Errorf("something went wrong: %#v", err)
-	}
-	if br != "refs/heads/master" {
-		log.Println("not in master branch so skip releasing")
-		return nil
-	}
-
 	tag, name := "staging", "staging"
 	if !staging {
 		tag, name = "v"+releaseVer, proj.Name+"-"+releaseVer
