@@ -204,7 +204,7 @@ func collectAssets() (assets []string, err error) {
 	if err != nil {
 		return nil, err
 	}
-	globs := [...]string{home + "/rpmbuild/RPMS/*/*.rpm", "packaging/*.deb", "snapshot/*zip", "snapshot/*.tar.gz", "build/*.tar.gz"}
+	globs := [...]string{home + "/rpmbuild/RPMS/*/*.rpm", "rpmbuild/RPMS/*/*.rpm", "packaging/*.deb", "snapshot/*.zip", "snapshot/*.tar.gz", "build/*.tar.gz"}
 	for _, glob := range globs {
 		files, err := filepath.Glob(glob)
 		if err != nil {
