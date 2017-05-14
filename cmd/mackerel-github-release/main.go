@@ -185,13 +185,13 @@ func handleOldRelease(octoCli *octokit.Client, owner, repo, tag string, staging,
 			if err != nil {
 				return fmt.Errorf("something went wrong: %#v", err)
 			}
-			resp, err := req.Delete(nil, nil)
-			if err != nil {
-				return fmt.Errorf("release deletion unsuccesful, %#v", err)
+			sawyerResp := req.Request.Delete()
+			if sawyerResp.IsError() {
+				return fmt.Errorf("release deletion unsuccesful, %#v", sawyerResp.ResponseError)
 			}
-			defer resp.Body.Close()
+			defer sawyerResp.Body.Close()
 
-			if resp.StatusCode != http.StatusNoContent {
+			if sawyerResp.StatusCode != http.StatusNoContent {
 				return fmt.Errorf("could not delete the release corresponding to tag %s", tag)
 			}
 		}
