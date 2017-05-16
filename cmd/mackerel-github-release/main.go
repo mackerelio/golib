@@ -76,9 +76,9 @@ func run(argv []string) int {
 var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Relase, so skip the process")
 
 func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dryRun bool) error {
-	tag, name := "staging", "staging"
+	tag := "staging"
 	if !staging {
-		tag, name = "v"+releaseVer, proj.Name+"-"+releaseVer
+		tag = "v" + releaseVer
 	}
 	repo, owner := proj.Name, proj.Owner
 	octoCli := getOctoCli()
@@ -112,7 +112,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 	if !dryRun {
 		params := &github.Release{
 			TagName:    tag,
-			Name:       name,
+			Name:       tag,
 			Body:       body,
 			Prerelease: true,
 		}
@@ -204,8 +204,14 @@ func collectAssets() (assets []string, err error) {
 	if err != nil {
 		return nil, err
 	}
-	globs := [...]string{home + "/rpmbuild/RPMS/*/*.rpm", "rpmbuild/RPMS/*/*.rpm", "packaging/*.deb", "snapshot/*.zip", "snapshot/*.tar.gz", "build/*.tar.gz"}
-	for _, glob := range globs {
+	for _, glob := range [...]string{
+		home + "/rpmbuild/RPMS/*/*.rpm",
+		"rpmbuild/RPMS/*/*.rpm",
+		"packaging/*.deb",
+		"snapshot/*.zip",
+		"snapshot/*.tar.gz",
+		"build/*.tar.gz",
+	} {
 		files, err := filepath.Glob(glob)
 		if err != nil {
 			return nil, err
