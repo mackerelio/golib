@@ -9,7 +9,9 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 
+	"github.com/Songmu/retry"
 	"github.com/github/hub/github"
 	"github.com/mitchellh/go-homedir"
 	"github.com/octokit/go-octokit/octokit"
@@ -223,9 +225,15 @@ func collectAssets() (assets []string, err error) {
 
 func uploadAssets(gh *github.Client, release *github.Release, assets []string) error {
 	for _, asset := range assets {
-		_, err := gh.UploadReleaseAsset(release, asset, "")
+		err := retry.Retry(3, 3*time.Second, func() error {
+			_, err := gh.UploadReleaseAsset(release, asset, "")
+			if err != nil {
+				log.Printf("failed to upload asset: %s, error: %#v", asset, err)
+			}
+			return err
+		})
 		if err != nil {
-			return fmt.Errorf("failed to upload asset: %s, error: %#v", asset, err)
+			return fmt.Errorf("failed to upload asset and gave up: %s, error: %#v", asset, err)
 		}
 	}
 	return nil
