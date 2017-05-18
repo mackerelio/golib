@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"time"
 
 	"github.com/Songmu/retry"
@@ -68,6 +69,7 @@ func run(argv []string) int {
 		log.Printf("failed to unmarshal `gobump show`'s output: %+v\n", err)
 		return exitError
 	}
+	log.Printf("Start uploading files to GitHub Releases. version: %s, staging: %t, dry-run: %t\n", v.Version, *staging, *dryRun)
 	err = uploadToGithubRelease(proj, v.Version, *staging, *dryRun)
 	if err != nil {
 		log.Printf("error occured while uploading artifacts to github: %+v\n", err)
@@ -76,7 +78,7 @@ func run(argv []string) int {
 	return exitOK
 }
 
-var errAlreadyReleased = fmt.Errorf("the release of this version(%s) has already existed at GitHub Relase, so skip the process\n")
+var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Relase, so skip the process")
 
 func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dryRun bool) error {
 	tag := "staging"
@@ -94,7 +96,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 	err = handleOldRelease(octoCli, owner, repo, tag, staging, dryRun)
 	if err != nil {
 		if err == errAlreadyReleased {
-			log.Printf(err.Error(), tag)
+			log.Printf("%s. version: %s\n", err, tag)
 			return nil
 		}
 		return err
@@ -104,6 +106,11 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 	assets, err := collectAssets()
 	if err != nil {
 		return errors.Wrap(err, "error occured while collecting releasing assets")
+	}
+	sort.Strings(assets)
+	log.Println("uploading following files:")
+	for _, f := range assets {
+		log.Println(f)
 	}
 
 	host, err := github.CurrentConfig().PromptForHost(proj.Host)
@@ -134,6 +141,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 			})
 		}
 	}
+	log.Printf("Upload done. version: %s, staging: %t, dry-run: %t\n", releaseVer, staging, dryRun)
 	return nil
 }
 
