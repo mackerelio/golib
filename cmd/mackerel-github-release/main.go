@@ -78,7 +78,7 @@ func run(argv []string) int {
 	return exitOK
 }
 
-var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Relase, so skip the process")
+var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Releases, so skip the process")
 
 func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dryRun bool) error {
 	tag := "staging"
@@ -110,7 +110,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 	sort.Strings(assets)
 	log.Println("uploading following files:")
 	for _, f := range assets {
-		log.Println(f)
+		log.Printf("- %s\n", f)
 	}
 
 	host, err := github.CurrentConfig().PromptForHost(proj.Host)
