@@ -136,9 +136,21 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 			return err
 		}
 		if !staging {
-			release, err = gh.EditRelease(release, map[string]interface{}{
-				"prerelease": false,
+			err = retry.Retry(3, 3*time.Second, func() error {
+				_, err := gh.EditRelease(release, map[string]interface{}{
+					"prerelease": false,
+				})
+				if err != nil {
+					log.Println(err)
+				}
+				return err
 			})
+			if err != nil {
+				return errors.Wrapf(
+					err,
+					"Upload done, but failed to update prerelease status from true to false. You can check the status and update manually. version: %s",
+					releaseVer)
+			}
 		}
 	}
 	log.Printf("Upload done. version: %s, staging: %t, dry-run: %t\n", releaseVer, staging, dryRun)
