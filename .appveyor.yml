@@ -1,0 +1,18 @@
+version: "{build}"
+
+clone_folder: c:\gopath\src\github.com\mackerelio\golib
+
+environment:
+  GOPATH: c:\gopath
+
+install:
+  - go version
+  - go env
+
+build_script:
+  - go get -d -v -t ./...
+
+test_script:
+  - go test -v ./...
+
+deploy: false
