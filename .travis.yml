@@ -7,3 +7,6 @@ script:
 - make cover
 after_script:
 - goveralls -coverprofile=.profile.cov
+os:
+- linux
+- osx
