@@ -3,7 +3,6 @@
 package uptime
 
 import (
-	"bytes"
 	"fmt"
 	"os/exec"
 	"strconv"
@@ -12,14 +11,11 @@ import (
 )
 
 func get() (float64, error) {
-	cmd := exec.Command("sysctl", "-n", "kern.boottime")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err := cmd.Run()
+	out, err := exec.Command("sysctl", "-n", "kern.boottime").Output()
 	if err != nil {
 		return 0.0, fmt.Errorf("faild to fetch uptime: %s", err)
 	}
-	return calcUptime(out.String(), time.Now().Unix())
+	return calcUptime(string(out), time.Now().Unix())
 }
 
 func calcUptime(str string, nowEpoch int64) (float64, error) {
