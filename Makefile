@@ -6,10 +6,10 @@ testgo: testdeps
 	go test ./...
 
 deps:
-	go get -d -v ./...
+	go get -u github.com/golang/dep/cmd/dep
+	dep ensure
 
-testdeps:
-	go get -d -v -t ./...
+testdeps: deps
 	go get github.com/golang/lint/golint
 	go get golang.org/x/tools/cmd/cover
 	go get github.com/pierrre/gotestcover
