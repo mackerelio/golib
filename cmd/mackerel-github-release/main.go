@@ -177,10 +177,16 @@ func getReleasePullRequest(octoCli *octokit.Client, owner, repo, releaseVer stri
 	q.Set("head", fmt.Sprintf("%s:%s", owner, releaseBranch))
 	u.RawQuery = q.Encode()
 	prs, r := octoCli.PullRequests(u).All()
-	if r.HasError() || len(prs) != 1 {
+	var pr *octokit.PullRequest
+	for i := range prs {
+		if prs[i].MergedAt != nil {
+			pr = &prs[i]
+		}
+	}
+	if r.HasError() || pr == nil {
 		return nil, fmt.Errorf("failed to detect release pull request: %+v", r.Err)
 	}
-	return &prs[0], nil
+	return pr, nil
 }
 
 func handleOldRelease(octoCli *octokit.Client, owner, repo, tag string, staging, dryRun bool) error {
