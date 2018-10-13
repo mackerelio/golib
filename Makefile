@@ -10,10 +10,10 @@ deps:
 
 testdeps:
 	go get -d -v -t ./...
-	go get github.com/golang/lint/golint
-	go get golang.org/x/tools/cmd/cover
-	go get github.com/pierrre/gotestcover
-	go get github.com/mattn/goveralls
+	go get golang.org/x/lint/golint \
+		golang.org/x/tools/cmd/cover \
+		github.com/pierrre/gotestcover \
+		github.com/mattn/goveralls
 
 lint: testdeps
 	go tool vet -all .
