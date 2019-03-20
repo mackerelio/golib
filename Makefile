@@ -21,7 +21,7 @@ testdeps:
 
 .PHONY: lint
 lint: testdeps
-	go tool vet -all .
+	go vet -all .
 	_tools/go-linter $(BUILD_OS_TARGETS)
 
 .PHONY: cover
