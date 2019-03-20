@@ -16,7 +16,7 @@ testdeps:
 		github.com/mattn/goveralls
 
 lint: testdeps
-	go tool vet -all .
+	go vet -all .
 	_tools/go-linter $(BUILD_OS_TARGETS)
 
 cover: testdeps
