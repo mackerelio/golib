@@ -1,4 +1,4 @@
-BUILD_OS_TARGETS = "linux darwin freebsd windows netbsd"
+BUILD_OS_TARGETS := "linux darwin freebsd windows netbsd"
 
 .PHONY: test
 test: lint testgo
