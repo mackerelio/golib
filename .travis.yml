@@ -10,3 +10,5 @@ after_script:
 os:
 - linux
 - osx
+env:
+- GO111MODULE=on

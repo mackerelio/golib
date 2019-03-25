@@ -1,4 +1,5 @@
 BUILD_OS_TARGETS := "linux darwin freebsd windows netbsd"
+export GO111MODULE := on
 
 .PHONY: test
 test: lint testgo
@@ -14,6 +15,7 @@ deps:
 .PHONY: testdeps
 testdeps:
 	go get -d -v -t ./...
+	GO111MODULE=off \
 	go get golang.org/x/lint/golint \
 		golang.org/x/tools/cmd/cover \
 		github.com/pierrre/gotestcover \
