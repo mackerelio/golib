@@ -12,3 +12,4 @@ os:
 - osx
 env:
 - GO111MODULE=on
+- GO111MODULE=off
