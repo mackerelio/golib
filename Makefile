@@ -1,5 +1,4 @@
 BUILD_OS_TARGETS := "linux darwin freebsd windows netbsd"
-export GO111MODULE := on
 
 .PHONY: test
 test: lint testgo
