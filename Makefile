@@ -8,10 +8,6 @@ test: lint testgo
 testgo: testdeps
 	go test ./...
 
-.PHONY: deps
-deps:
-	go get -d -v ./...
-
 .PHONY: testdeps
 testdeps:
 	go get -d -v -t ./...
