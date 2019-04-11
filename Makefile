@@ -7,13 +7,10 @@ test: lint testgo
 testgo: testdeps
 	go test ./...
 
-.PHONY: deps
-deps:
-	go get -d -v ./...
-
 .PHONY: testdeps
 testdeps:
 	go get -d -v -t ./...
+	GO111MODULE=off \
 	go get golang.org/x/lint/golint \
 		golang.org/x/tools/cmd/cover \
 		github.com/pierrre/gotestcover \
