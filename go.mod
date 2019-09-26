@@ -7,7 +7,7 @@ require (
 	github.com/Songmu/retry v0.1.0
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
 	github.com/fhs/go-netrc v1.0.0 // indirect
-	github.com/github/hub v2.11.1+incompatible
+	github.com/github/hub v2.11.2+incompatible
 	github.com/jingweno/go-sawyer v0.0.0-20140729165055-1999ae5763d6 // indirect
 	github.com/jtacoma/uritemplates v1.0.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
