@@ -17,7 +17,7 @@ require (
 	github.com/mattn/go-isatty v0.0.7 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/octokit/go-octokit v0.4.1-0.20160312003706-812e91dfbd64
-	github.com/pkg/errors v0.8.1
+	github.com/pkg/errors v0.9.1
 	github.com/stretchr/objx v0.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20190404164418-38d8ce5564a5 // indirect
 	golang.org/x/sys v0.0.0-20190410235845-0ad05ae3009d // indirect
