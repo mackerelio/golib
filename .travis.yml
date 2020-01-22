@@ -11,5 +11,5 @@ os:
 - linux
 - osx
 env:
-- GO111MODULE=on
-- GO111MODULE=off
+  global:
+  - GO111MODULE=on
