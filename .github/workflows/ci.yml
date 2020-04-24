@@ -3,18 +3,28 @@ name: CI
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: ['ubuntu-18.04', 'macOS-10.15', 'windows-2019']
         go: ['1.14.x']
-    name: Go ${{ matrix.go }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-go@v2-beta
       with:
         go-version: ${{ matrix.go }}
-    - run: |
-        make lint cover
-        goveralls -coverprofile=.profile.cov
-      shell: bash
+    - run: make lint cover
+    - uses: shogo82148/actions-goveralls@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-profile: .profile.cov
+        parallel: true
+        job-number: ${{ strategy.job-index }}
+  finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: shogo82148/actions-goveralls@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true

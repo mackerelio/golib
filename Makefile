@@ -11,7 +11,6 @@ testgo: testdeps
 testdeps:
 	go install golang.org/x/lint/golint \
 		golang.org/x/tools/cmd/cover \
-		github.com/pierrre/gotestcover \
 		github.com/mattn/goveralls
 
 .PHONY: lint
@@ -21,4 +20,4 @@ lint: testdeps
 
 .PHONY: cover
 cover: testdeps
-	gotestcover -v -covermode=count -coverprofile=.profile.cov -parallelpackages=4 ./...
+	go test -race -covermode atomic -coverprofile=.profile.cov ./...
