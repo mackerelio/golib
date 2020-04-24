@@ -9,9 +9,7 @@ testgo: testdeps
 
 .PHONY: testdeps
 testdeps:
-	go get -d -v -t ./...
-	GO111MODULE=off \
-	go get golang.org/x/lint/golint \
+	go install golang.org/x/lint/golint \
 		golang.org/x/tools/cmd/cover \
 		github.com/pierrre/gotestcover \
 		github.com/mattn/goveralls
