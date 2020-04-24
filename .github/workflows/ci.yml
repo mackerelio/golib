@@ -1,0 +1,20 @@
+name: CI
+
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-18.04', 'macOS-10.15', 'windows-2019']
+        go: ['1.14.x']
+    name: Go ${{ matrix.go }} on ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v2-beta
+      with:
+        go-version: ${{ matrix.go }}
+    - run: |
+        make lint cover
+        goveralls -coverprofile=.profile.cov
+      shell: bash
