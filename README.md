@@ -1,8 +1,8 @@
 github.com/mackerelio/golib
 ===
-[![Build Status](https://github.com/mackerelio/golib/workflows/ci/badge.svg?branch=master)][actions]
+[![Build Status](https://github.com/mackerelio/golib/workflows/Build/badge.svg?branch=master)][actions]
 
-[actions]: https://github.com/mackerelio/golib/actions?workflow=ci
+[actions]: https://github.com/mackerelio/golib/actions?workflow=Build
 
 github.com/mackerelio/golib - go libraries for [Mackerel][Mackerel] products
 
