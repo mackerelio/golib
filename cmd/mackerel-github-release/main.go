@@ -16,7 +16,6 @@ import (
 	"github.com/github/hub/github"
 	"github.com/mitchellh/go-homedir"
 	"github.com/octokit/go-octokit/octokit"
-	"github.com/pkg/errors"
 )
 
 const (
@@ -105,7 +104,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 	body := pr.Body
 	assets, err := collectAssets()
 	if err != nil {
-		return errors.Wrap(err, "error occured while collecting releasing assets")
+		return fmt.Errorf("error occured while collecting releasing assets: %w", err)
 	}
 	sort.Strings(assets)
 	log.Println("uploading following files:")
@@ -115,7 +114,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 
 	host, err := github.CurrentConfig().PromptForHost(proj.Host)
 	if err != nil {
-		return errors.Wrap(err, "failed to detect github config")
+		return fmt.Errorf("failed to detect github config: %w", err)
 	}
 	gh := github.NewClientWithHost(host)
 
@@ -128,7 +127,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 		}
 		release, err := gh.CreateRelease(proj, params)
 		if err != nil {
-			return errors.Wrap(err, "failed to create release")
+			return fmt.Errorf("failed to create release: %w", err)
 		}
 
 		err = uploadAssets(gh, release, assets)
@@ -146,10 +145,7 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 				return err
 			})
 			if err != nil {
-				return errors.Wrapf(
-					err,
-					"Upload done, but failed to update prerelease status from true to false. You can check the status and update manually. version: %s",
-					releaseVer)
+				return fmt.Errorf("Upload done, but failed to update prerelease status from true to false. You can check the status and update manually. version: %s: %w", releaseVer, err)
 			}
 		}
 	}
@@ -193,13 +189,13 @@ func handleOldRelease(octoCli *octokit.Client, owner, repo, tag string, staging,
 	releaseByTagURL := octokit.Hyperlink("repos/{owner}/{repo}/releases/tags/{tag}")
 	u, err := releaseByTagURL.Expand(octokit.M{"owner": owner, "repo": repo, "tag": tag})
 	if err != nil {
-		return errors.Wrap(err, "failed to build GitHub URL")
+		return fmt.Errorf("failed to build GitHub URL: %w", err)
 	}
 	release, r := octoCli.Releases(u).Latest()
 	if r.Err != nil {
 		rerr, ok := r.Err.(*octokit.ResponseError)
 		if !ok || rerr.Response == nil || rerr.Response.StatusCode != http.StatusNotFound {
-			return errors.Wrap(r.Err, "failed to fetch release")
+			return fmt.Errorf("failed to fetch release: %w", r.Err)
 		}
 	}
 	if release != nil {
@@ -209,11 +205,11 @@ func handleOldRelease(octoCli *octokit.Client, owner, repo, tag string, staging,
 		if !dryRun {
 			req, err := octoCli.NewRequest(release.URL)
 			if err != nil {
-				return errors.Wrap(err, "something went wrong")
+				return fmt.Errorf("something went wrong: %w", err)
 			}
 			sawyerResp := req.Request.Delete()
 			if sawyerResp.IsError() {
-				return errors.Wrap(sawyerResp.ResponseError, "release detection unsuccesful")
+				return fmt.Errorf("release detection unsuccesful: %w", sawyerResp.ResponseError)
 			}
 			defer sawyerResp.Body.Close()
 
@@ -257,7 +253,7 @@ func uploadAssets(gh *github.Client, release *github.Release, assets []string) e
 			return err
 		})
 		if err != nil {
-			return errors.Wrapf(err, "failed to upload asset and gave up: %s", asset)
+			return fmt.Errorf("failed to upload asset and gave up: %s: %w", asset, err)
 		}
 	}
 	return nil
