@@ -15,9 +15,8 @@ require (
 	github.com/mattn/go-colorable v0.1.6 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/octokit/go-octokit v0.4.1-0.20160312003706-812e91dfbd64
-	github.com/pkg/errors v0.9.1
-	github.com/stretchr/testify v1.5.1 // indirect
+	github.com/stretchr/testify v1.6.1 // indirect
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b
-	golang.org/x/tools v0.0.0-20200426102838-f3a5411a4c3b
-	gopkg.in/yaml.v2 v2.2.8 // indirect
+	golang.org/x/tools v0.0.0-20200612022331-742c5eb664c2
+	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
