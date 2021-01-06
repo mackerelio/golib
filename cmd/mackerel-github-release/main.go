@@ -251,20 +251,18 @@ func collectAssets() (assets []string, err error) {
 
 func specifiedCollectAssets(directories []string) (assets []string, err error) {
 	for _, dir := range directories {
-		if _, err := os.Stat(dir); err == nil {
-			errWalk := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-				if err != nil {
-					return err
-				}
-				if info.IsDir() {
-					return nil
-				}
-				assets = append(assets, path)
-				return nil
-			})
-			if errWalk != nil {
-				return nil, errWalk
+		errWalk := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
 			}
+			if info.IsDir() {
+				return nil
+			}
+			assets = append(assets, path)
+			return nil
+		})
+		if errWalk != nil {
+			return nil, errWalk
 		}
 	}
 	return assets, nil
