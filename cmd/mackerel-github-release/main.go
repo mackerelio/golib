@@ -69,7 +69,7 @@ func run(argv []string) int {
 		return exitError
 	}
 	log.Printf("Start uploading files to GitHub Releases. version: %s, staging: %t, dry-run: %t\n", v.Version, *staging, *dryRun)
-	err = uploadToGithubRelease(proj, v.Version, *staging, *dryRun)
+	err = uploadToGithubRelease(proj, v.Version, *staging, *dryRun, fs.Args())
 	if err != nil {
 		log.Printf("error occured while uploading artifacts to github: %+v\n", err)
 		return exitError
@@ -79,7 +79,7 @@ func run(argv []string) int {
 
 var errAlreadyReleased = fmt.Errorf("the release of this version has already existed at GitHub Releases, so skip the process")
 
-func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dryRun bool) error {
+func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dryRun bool, directories []string) error {
 	tag := "staging"
 	if !staging {
 		tag = "v" + releaseVer
@@ -102,7 +102,13 @@ func uploadToGithubRelease(proj *github.Project, releaseVer string, staging, dry
 	}
 
 	body := pr.Body
-	assets, err := collectAssets()
+
+	var assets []string
+	if len(directories) > 0 {
+		assets, err = specifiedCollectAssets(directories)
+	} else {
+		assets, err = collectAssets()
+	}
 	if err != nil {
 		return fmt.Errorf("error occured while collecting releasing assets: %w", err)
 	}
@@ -239,6 +245,27 @@ func collectAssets() (assets []string, err error) {
 			return nil, err
 		}
 		assets = append(assets, files...)
+	}
+	return assets, nil
+}
+
+func specifiedCollectAssets(directories []string) (assets []string, err error) {
+	for _, dir := range directories {
+		if _, err := os.Stat(dir); err == nil {
+			errWalk := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+				if err != nil {
+					return err
+				}
+				if info.IsDir() {
+					return nil
+				}
+				assets = append(assets, path)
+				return nil
+			})
+			if errWalk != nil {
+				return nil, errWalk
+			}
+		}
 	}
 	return assets, nil
 }
