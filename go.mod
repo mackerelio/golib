@@ -17,6 +17,6 @@ require (
 	github.com/octokit/go-octokit v0.4.1-0.20160312003706-812e91dfbd64
 	github.com/stretchr/testify v1.6.1 // indirect
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b
-	golang.org/x/tools v0.0.0-20200612022331-742c5eb664c2
+	golang.org/x/tools v0.0.0-20200612022331-742c5eb664c2 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )

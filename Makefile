@@ -10,8 +10,7 @@ testgo: testdeps
 .PHONY: testdeps
 testdeps:
 	go install \
-		golang.org/x/lint/golint \
-		golang.org/x/tools/cmd/cover
+		golang.org/x/lint/golint
 
 .PHONY: lint
 lint: testdeps
