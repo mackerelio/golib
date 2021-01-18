@@ -1,6 +1,0 @@
-#!/bin/sh
-set -eu
-
-for os in $@; do
-  GOOS=$os golint -set_exit_status ./...
-done

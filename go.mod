@@ -16,7 +16,6 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/octokit/go-octokit v0.4.1-0.20160312003706-812e91dfbd64
 	github.com/stretchr/testify v1.6.1 // indirect
-	golang.org/x/lint v0.0.0-20200302205851-738671d3881b
-	golang.org/x/tools v0.0.0-20200612022331-742c5eb664c2 // indirect
+	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
