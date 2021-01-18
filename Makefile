@@ -1,23 +1,7 @@
-BUILD_OS_TARGETS := "linux darwin freebsd windows netbsd"
-
 .PHONY: test
-test: lint testgo
-
-.PHONY: testgo
-testgo: testdeps
+test:
 	go test ./...
 
-.PHONY: testdeps
-testdeps:
-	go install \
-		golang.org/x/lint/golint \
-		golang.org/x/tools/cmd/cover
-
-.PHONY: lint
-lint: testdeps
-	go vet -all .
-	_tools/go-linter $(BUILD_OS_TARGETS)
-
 .PHONY: cover
-cover: testdeps
+cover:
 	go test -race -covermode atomic -coverprofile=.profile.cov ./...
