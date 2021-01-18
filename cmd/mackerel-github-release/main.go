@@ -1,3 +1,8 @@
+// mackerel-github-release creates new tag and uploads files on GitHub Releases.
+//
+// Usage:
+//	mackerel-github-release [-dry-run] [-staging] [files ...]
+//
 package main
 
 import (
@@ -22,8 +27,6 @@ const (
 	exitOK = iota
 	exitError
 )
-
-const version = "0.0.0"
 
 func main() {
 	os.Exit(run(os.Args[1:]))
