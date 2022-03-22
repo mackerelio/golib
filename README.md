@@ -1,8 +1,12 @@
 github.com/mackerelio/golib
 ===
 [![Build Status](https://github.com/mackerelio/golib/workflows/Build/badge.svg?branch=master)][actions]
+[![Coverage Status](https://coveralls.io/repos/mackerelio/golib/badge.svg?branch=master)][coveralls]
+[![pkg.go.dev](https://pkg.go.dev/badge/github.com/mackerelio/golib)][pkg.go.dev]
 
 [actions]: https://github.com/mackerelio/golib/actions?workflow=Build
+[coveralls]: https://coveralls.io/r/mackerelio/golib?branch=master
+[pkg.go.dev]: https://pkg.go.dev/github.com/mackerelio/golib
 
 github.com/mackerelio/golib - go libraries for [Mackerel][Mackerel] products
 
