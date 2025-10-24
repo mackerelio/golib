@@ -18,9 +18,9 @@ func TestGenerateTempfilePathWithBase(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			origDir := os.Getenv("MACKEREL_PLUGIN_WORKDIR")
-			os.Setenv("MACKEREL_PLUGIN_WORKDIR", tt.env)
+			os.Setenv("MACKEREL_PLUGIN_WORKDIR", tt.env) // nolint
 			t.Cleanup(func() {
-				os.Setenv("MACKEREL_PLUGIN_WORKDIR", origDir)
+				os.Setenv("MACKEREL_PLUGIN_WORKDIR", origDir) // nolint
 			})
 
 			defaultPath := PluginWorkDir()
